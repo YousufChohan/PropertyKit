@@ -5,13 +5,53 @@ import {
   View,
   Image,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { containerFull, goback, logo1 } from "../../../commoncss/PageCSS";
 import { Ionicons } from "@expo/vector-icons";
 import logo from "../../../../assets/logo.png";
 import { formButton, formHead2, formInput } from "../../../commoncss/FormCSS";
+import { color } from "../../../commoncss/color";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const Signup_Email = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const handleEmail = () => {
+    // setLoading(true)
+    // navigation.navigate('Signup_EnterVerificationCode')
+    if (email == "") {
+      alert("Please enter email");
+    } else {
+      setLoading(true);
+      fetch("http://10.0.2.2:3000/verify", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error === "User already exsist!!") {
+            // alert('Invalid Credentials')
+            alert("Invalid Credentials");
+            setLoading(false);
+          } else if (data.message === "Email Sent") {
+            setLoading(false);
+            alert(data.message);
+            navigation.navigate("Signup_Verify", {
+              useremail: data.email,
+              userVerificationCode: data.VerificationCode,
+            });
+          }
+        });
+    }
+  };
+
   return (
     <View style={containerFull}>
       <TouchableOpacity
@@ -33,13 +73,20 @@ const Signup_Email = ({ navigation }) => {
 
       <Image source={logo} style={logo1} />
       <Text style={formHead2}>Create a new account</Text>
-      <TextInput placeholder="Enter Your Email" style={formInput} />
-      <Text
-        style={formButton}
-        onPress={() => navigation.navigate("Signup_Verify")}
-      >
-        Next
-      </Text>
+      <TextInput
+        placeholder="Enter Your Email"
+        style={formInput}
+        onChangeText={(text) => {
+          setEmail(text);
+        }}
+      />
+      {loading ? (
+        <ActivityIndicator size="large" color="black" />
+      ) : (
+        <Text style={formButton} onPress={() => handleEmail()}>
+          Next
+        </Text>
+      )}
     </View>
   );
 };

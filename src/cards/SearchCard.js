@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Touchable,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { icon1, row } from "../commoncss/PageCSS";
@@ -6,6 +13,9 @@ import { FontAwesome } from "@expo/vector-icons";
 import { notecss } from "../commoncss/FormCSS";
 import { color } from "../commoncss/color";
 const SearchCard = ({
+  navigation,
+  route,
+  agentemail,
   agentname,
   propertyPrecinct,
   propertyNum,
@@ -18,17 +28,21 @@ const SearchCard = ({
   interested,
   comments,
 }) => {
-  //console.log(agentname);
-
   const [isInterested, setIsInterested] = useState(false);
   const [showcomments, setShowcomments] = useState(false);
-
+  console.log(navigation);
   return (
     <View style={styles.container}>
-      <View style={styles.c1}>
-        <Image source={{ uri: profileImage }} style={styles.profilepic} />
-        <Text style={styles.agentname}>{agentname}</Text>
-      </View>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("OtherProfile", { navigation, agentemail })
+        }
+      >
+        <View style={styles.c1}>
+          <Image source={{ uri: profileImage }} style={styles.profilepic} />
+          <Text style={styles.agentname}>{agentname}</Text>
+        </View>
+      </TouchableOpacity>
       <View>
         <Text style={styles.propertyDetail}>
           Precinct: {propertyPrecinct} Type: {propertyType}
@@ -61,7 +75,7 @@ const SearchCard = ({
                 setIsInterested(false);
               }}
             />
-            <Text style={styles.interested}>{interested.length + 1}</Text>
+            <Text style={styles.interested}>{interested?.length + 1}</Text>
           </View>
         ) : (
           <View style={styles.s21}>
@@ -74,7 +88,7 @@ const SearchCard = ({
                 setIsInterested(true);
               }}
             />
-            <Text style={styles.notInterested}>{interested.length}</Text>
+            <Text style={styles.notInterested}>{interested?.length}</Text>
           </View>
         )}
 
@@ -154,7 +168,7 @@ const styles = StyleSheet.create({
     //marginHorizontal: "2.5%",
     width: "100%",
     //height: 390,
-    aspectRatio: 2.1,
+    aspectRatio: 1.4,
     resizeMode: "stretch",
   },
   s2: {

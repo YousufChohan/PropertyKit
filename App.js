@@ -19,6 +19,15 @@ import Requirement from "./src/screens/mainpage/Requirement";
 import MyProfile from "./src/screens/profile/MyProfile";
 import NotificationPage from "./src/screens/mainpage/NotificationPage";
 import Settings1 from "./src/screens/settings/Settings1";
+import ChangePassword from "./src/screens/settings/ChangePassword";
+import ChangeDescription from "./src/screens/settings/ChangeDescription";
+import ChangeUsername from "./src/screens/settings/ChangeUsername";
+import UploadProfilePicture from "./src/screens/settings/UploadProfilePicture";
+import EditProfile from "./src/screens/settings/EditProfile";
+import AddPost from "./src/screens/mainpage/AddPost";
+import OtherProfile from "./src/screens/profile/OtherProfile";
+import SplashScreen from "./src/screens/splash/SplashScreen";
+import MessagePage from "./src/screens/chat/MessagePage";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +40,9 @@ export default function App() {
           animation: "slide_from_right",
         }}
       >
+        <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen name="MainPage" component={MainPage} />
+
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup_Email" component={Signup_Email} />
         <Stack.Screen name="Signup_Verify" component={Signup_Verify} />
@@ -56,7 +68,6 @@ export default function App() {
           name="ForgotPassword_AccountRecovered"
           component={ForgotPassword_AccountRecovered}
         />
-        <Stack.Screen name="MainPage" component={MainPage} />
         <Stack.Screen
           name="All_Chats"
           component={All_Chats}
@@ -86,6 +97,13 @@ export default function App() {
           }}
         />
         <Stack.Screen
+          name="OtherProfile"
+          component={OtherProfile}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        />
+        <Stack.Screen
           name="NotificationPage"
           component={NotificationPage}
           options={{
@@ -99,6 +117,50 @@ export default function App() {
             animation: "slide_from_bottom",
           }}
         />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        />
+        <Stack.Screen
+          name="ChangePassword"
+          component={ChangePassword}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        />
+        <Stack.Screen
+          name="ChangeDescription"
+          component={ChangeDescription}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        />
+        <Stack.Screen
+          name="ChangeUsername"
+          component={ChangeUsername}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        />
+        {/* <Stack.Screen
+          name="ChangePassword"
+          component={ChangePassword}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        /> */}
+        <Stack.Screen
+          name="UploadProfilePicture"
+          component={UploadProfilePicture}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        />
+        <Stack.Screen name="AddPost" component={AddPost} />
+        <Stack.Screen name="MessagePage" component={MessagePage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

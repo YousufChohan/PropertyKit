@@ -92,7 +92,7 @@ const All_Chats = ({ navigation }) => {
           <Ionicons
             name="arrow-back"
             style={styles.gohomeicon}
-            onPress={() => navigation.navigate("MainPage")}
+            onPress={() => navigation.goBack()}
           />
           <Text style={formHead}>Your Dealings</Text>
           <TextInput

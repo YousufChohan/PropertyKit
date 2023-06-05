@@ -16,7 +16,25 @@ import {
   formHead3,
   formInput,
 } from "../../../commoncss/FormCSS";
-const ForgotPassword_Verification = ({ navigation }) => {
+
+const ForgotPassword_Verification = ({ navigation, route }) => {
+  const { useremail, userVerificationCode } = route.params;
+  console.log(useremail, userVerificationCode);
+
+  const [verificationCode, setVerificationCode] = React.useState("");
+
+  const handleVerificationCode = () => {
+    if (verificationCode != userVerificationCode) {
+      alert("Invalid Verification Code");
+    } else {
+      alert("Verification Code Matched");
+      navigation.navigate("ForgotPassword_Password", {
+        email: useremail,
+      });
+    }
+
+    // navigation.navigate('ForgotPassword_ChoosePassword')
+  };
   return (
     <View style={containerFull}>
       <TouchableOpacity
@@ -40,11 +58,13 @@ const ForgotPassword_Verification = ({ navigation }) => {
       <Text style={formHead3}>
         Verificaion code has been sent to your Email
       </Text>
-      <TextInput placeholder="Enter 6-digit code here" style={formInput} />
-      <Text
-        style={formButton}
-        onPress={() => navigation.navigate("ForgotPassword_Password")}
-      >
+      <TextInput
+        placeholder="Enter 6-Digit Code here"
+        style={formInput}
+        onChangeText={(text) => setVerificationCode(text)}
+      />
+
+      <Text style={formButton} onPress={() => handleVerificationCode()}>
         Next
       </Text>
     </View>

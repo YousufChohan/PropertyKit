@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   StyleSheet,
@@ -6,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   activenavbar_icon1,
@@ -28,11 +29,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import ProfileCard from "../../cards/ProfileCard";
 import ProfileCard2 from "../../cards/ProfileCard2";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import nopic from "../../../assets/nopic.png";
 
 const MyProfile = ({ navigation }) => {
-  const [showDetail, SetShowDetail] = useState(true);
-  const [showProperty, SetShowProperty] = useState(true);
-  const data = {
+  const datta = {
     agentName: "usufchohan",
     agentEmail: "yousuf-chohan@hotmail.com",
     agentPhone: "03312140590",
@@ -425,174 +426,227 @@ const MyProfile = ({ navigation }) => {
       },
     ],
   };
+  const [showDetail, SetShowDetail] = useState(true);
+  const [showProperty, SetShowProperty] = useState(true);
+  const [userdata, setUserdata] = React.useState(null);
+
+  const loaddata = async () => {
+    AsyncStorage.getItem("user")
+      .then(async (value) => {
+        // console.log("async userdata ", data);
+        fetch("http://10.0.2.2:3000/userdata", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + JSON.parse(value).token,
+          },
+          body: JSON.stringify({ email: JSON.parse(value).user.email }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            // console.log(data);
+            if (data.message == "User Found!!") {
+              // alert("Hello");
+              setUserdata(data.user);
+            } else {
+              alert("Login Again");
+              navigation.navigate("Login");
+            }
+          })
+          .catch((err) => {
+            navigation.navigate("Login");
+          });
+      })
+      .catch((err) => {
+        navigation.navigate("Login");
+      });
+  };
+  useEffect(() => {
+    loaddata();
+  }, []);
+
+  // console.log("userdata ", userdata);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
       <Topnavbar navigation={navigation} page2={"MainPage"} />
       <Bottomnavbar navigation={navigation} page={"MyProfile"} />
-
-      <ScrollView>
-        <View style={styles.c1}>
-          {data.profileImage.length > 0 ? (
-            <Image
-              style={styles.profilepic}
-              source={{ uri: data.profileImage }}
-            />
-          ) : (
-            <Image
-              style={styles.profilepic}
-              source={{ uri: data.profileImage }}
-            />
-          )}
-          <View style={styles.c11}>
-            <View style={styles.c111}>
-              <Ionicons
-                name="person-circle"
-                style={styles.icon}
-                size={24}
-                color="black"
+      {userdata ? (
+        <ScrollView>
+          <View style={styles.c1}>
+            {userdata.profilepic ? (
+              <Image
+                style={styles.profilepic}
+                source={{ uri: userdata.profilepic }}
               />
-              <Text style={styles.txt}>{data.agentName}</Text>
-            </View>
-            <View style={styles.c111}>
-              <Fontisto
-                name="persons"
-                style={styles.icon}
-                size={24}
-                color="black"
-              />
-              <Text style={styles.txt}>{data.agencyName}</Text>
-            </View>
-            <View style={styles.c111}>
-              <Ionicons
-                name="call"
-                style={styles.icon}
-                size={24}
-                color="black"
-              />
-              <Text style={styles.txt}>{data.agentPhone}</Text>
+            ) : (
+              <Image style={styles.profilepic} source={nopic} />
+            )}
+            <View style={styles.c11}>
+              <View style={styles.c111}>
+                <Ionicons
+                  name="person-circle"
+                  style={styles.icon}
+                  size={24}
+                  color="black"
+                />
+                <Text style={styles.txt}>{userdata.username}</Text>
+              </View>
+              <View style={styles.c111}>
+                <Fontisto
+                  name="persons"
+                  style={styles.icon}
+                  size={24}
+                  color="black"
+                />
+                <Text style={styles.txt}>{userdata.agency}</Text>
+              </View>
+              <View style={styles.c111}>
+                <Ionicons
+                  name="call"
+                  style={styles.icon}
+                  size={24}
+                  color="black"
+                />
+                <Text style={styles.txt}>{userdata.mobile}</Text>
+              </View>
             </View>
           </View>
-        </View>
-        {showDetail ? (
-          <TouchableOpacity
-            style={{ flexDirection: "row", justifyContent: "center" }}
-            onPress={() => {
-              SetShowDetail(false);
-            }}
-          >
-            <Text style={styles.txt}>Show Detail</Text>
-            <Feather name="arrow-down" size={24} color="black" />
-          </TouchableOpacity>
-        ) : (
-          <View>
+          {showDetail ? (
             <TouchableOpacity
               style={{ flexDirection: "row", justifyContent: "center" }}
               onPress={() => {
-                SetShowDetail(true);
+                SetShowDetail(false);
               }}
             >
-              <Text style={styles.txt}>Show Less</Text>
-              <Feather name="arrow-up" size={24} color="black" />
+              <Text style={styles.txt}>Show Detail</Text>
+              <Feather name="arrow-down" size={24} color="black" />
             </TouchableOpacity>
-            <Text style={styles.txt}>
-              E-Mail: <Text style={styles.txt}>{data.agentEmail}</Text>
-            </Text>
-            <Text style={styles.txt}>City: {data.agentCity}</Text>
-            {data.agentBio.length > 0 && (
-              <Text style={styles.txt}>About: {data.agentBio}</Text>
-            )}
-          </View>
-        )}
-        <View style={styles.hr1}></View>
-        <View style={styles.deals}>
-          <View style={styles.dealsbuttons}>
-            <TouchableOpacity
-              style={styles.c2a}
-              onPress={() => SetShowProperty(true)}
-            >
-              {showProperty ? (
-                <Ionicons name="business" style={activenavbar_icon1} />
-              ) : (
-                <Ionicons name="business" style={navbar_icon1} />
-              )}
-              <Text style={{ fontSize: 15 }}>My Property</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.c2b}
-              onPress={() => navigation.navigate("Settings1")}
-            >
-              <Ionicons
-                name="settings"
-                style={navbar_icon1}
-                // onPress={() => navigation.navigate("SearchPage")}
-              />
-              <Text style={{ fontSize: 15 }}>Settings</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.c2a}
-              onPress={() => SetShowProperty(false)}
-            >
-              {showProperty ? (
-                <MaterialCommunityIcons
-                  name="format-list-checks"
-                  style={navbar_icon1}
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="format-list-checks"
-                  style={activenavbar_icon1}
-                />
-              )}
-
-              <Text style={{ fontSize: 15 }}>My Demand</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.hr1}></View>
-          {showProperty ? (
-            <View style={styles.c13}>
-              {data.properties.map((item) => {
-                return (
-                  <ProfileCard
-                    key={item.id}
-                    agentname={item.agentname}
-                    propertyPrecinct={item.propertyPrecinct}
-                    propertyNum={item.propertyNum}
-                    propertyStreet={item.propertyStreet}
-                    propertyPrice={item.propertyPrice}
-                    propertyType={item.propertyType}
-                    propertyDetail={item.propertyDetail}
-                    propertyImage={item.propertyImage}
-                    profileImage={item.profileImage}
-                    interested={item.interested}
-                    comments={item.comments}
-                  />
-                );
-              })}
-            </View>
           ) : (
-            <View style={styles.c13}>
-              {data.requirements.map((item) => {
-                return (
-                  <ProfileCard2
-                    key={item.id}
-                    agentname={item.agentname}
-                    reqPrecinct={item.reqPrecinct}
-                    reqNum={item.reqNum}
-                    reqStreet={item.reqStreet}
-                    reqType={item.reqType}
-                    reqBudget={item.reqBudget}
-                    reqSpecs={item.reqSpecs}
-                    profileImage={item.profileImage}
-                    noted={item.noted}
-                    offers={item.offers}
-                  />
-                );
-              })}
+            <View>
+              <TouchableOpacity
+                style={{ flexDirection: "row", justifyContent: "center" }}
+                onPress={() => {
+                  SetShowDetail(true);
+                }}
+              >
+                <Text style={styles.txt}>Show Less</Text>
+                <Feather name="arrow-up" size={24} color="black" />
+              </TouchableOpacity>
+              <Text style={styles.txt}>
+                E-Mail: <Text style={styles.txt}>{userdata.email}</Text>
+              </Text>
+              <Text style={styles.txt}>City: {userdata.city}</Text>
+              {datta.agentBio.length > 0 && (
+                <Text style={styles.txt}>About: {userdata.description}</Text>
+              )}
             </View>
           )}
-        </View>
-      </ScrollView>
+          <View style={styles.hr1}></View>
+          <View style={styles.deals}>
+            <View style={styles.dealsbuttons}>
+              <TouchableOpacity
+                style={styles.c2a}
+                onPress={() => SetShowProperty(true)}
+              >
+                {showProperty ? (
+                  <Ionicons name="business" style={activenavbar_icon1} />
+                ) : (
+                  <Ionicons name="business" style={navbar_icon1} />
+                )}
+                <Text style={{ fontSize: 15 }}>My Property</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.c2b}
+                onPress={() => navigation.navigate("Settings1")}
+              >
+                <Ionicons
+                  name="settings"
+                  style={navbar_icon1}
+                  // onPress={() => navigation.navigate("SearchPage")}
+                />
+                <Text style={{ fontSize: 15 }}>Settings</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.c2a}
+                // onPress={() => SetShowProperty(false)}
+              >
+                {showProperty ? (
+                  <MaterialCommunityIcons
+                    name="format-list-checks"
+                    style={navbar_icon1}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="format-list-checks"
+                    style={activenavbar_icon1}
+                  />
+                )}
+
+                <Text style={{ fontSize: 15 }}>My Demand</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.hr1}></View>
+            {showProperty ? (
+              <View style={styles.c13}>
+                {userdata.posts?.reverse().map((item) => {
+                  return (
+                    <ProfileCard
+                      key={item.post}
+                      propertyNum={item.propertynum}
+                      propertyImage={item.post}
+                      propertyType={item.propertytype}
+                      propertyStreet={item.propertystreet}
+                      propertyPrecinct={item.propertyprecinct}
+                    />
+                  );
+                })}
+                {/* {datta.properties.map((item) => {
+                  return (
+                    <ProfileCard
+                      key={item.id}
+                      agentname={item.agentname}
+                      propertyPrecinct={item.propertyPrecinct}
+                      propertyNum={item.propertyNum}
+                      propertyStreet={item.propertyStreet}
+                      propertyPrice={item.propertyPrice}
+                      propertyType={item.propertyType}
+                      propertyDetail={item.propertyDetail}
+                      propertyImage={item.propertyImage}
+                      profileImage={item.profileImage}
+                      interested={item.interested}
+                      comments={item.comments}
+                    />
+                  );
+                })} */}
+              </View>
+            ) : (
+              <View style={styles.c13}>
+                {datta.requirements.map((item) => {
+                  return (
+                    <ProfileCard2
+                      key={item.id}
+                      agentname={item.agentname}
+                      reqPrecinct={item.reqPrecinct}
+                      reqNum={item.reqNum}
+                      reqStreet={item.reqStreet}
+                      reqType={item.reqType}
+                      reqBudget={item.reqBudget}
+                      reqSpecs={item.reqSpecs}
+                      profileImage={item.profileImage}
+                      noted={item.noted}
+                      offers={item.offers}
+                    />
+                  );
+                })}
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      ) : (
+        <ActivityIndicator size="large" color="black" style={styles.c1loader} />
+      )}
     </SafeAreaView>
   );
 };
@@ -613,6 +667,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
 
     // alignItems: "center",
+  },
+  c1loader: {
+    marginTop: 40,
   },
   profilepic: {
     width: 90,

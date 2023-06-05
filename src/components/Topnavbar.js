@@ -6,9 +6,15 @@ import { Entypo } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { color } from "../commoncss/color";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 const Topnavbar = ({ navigation, page, page2 }) => {
   return (
     <SafeAreaView style={styles.container}>
+      <Ionicons
+        name="add-circle-sharp"
+        style={styles.icon1}
+        onPress={() => navigation.navigate("AddPost")}
+      />
       <Image source={logo} style={logo2} />
 
       <View style={styles.container2}>
@@ -46,7 +52,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     zIndex: 100,
-    backgroundColor: color.secondarycolor,
+    backgroundColor: color.primarycolor,
   },
   container2: {
     flexDirection: "row",
@@ -60,5 +66,10 @@ const styles = StyleSheet.create({
     // top: 0,
     // zIndex: 100,
     // backgroundColor: "#CAEEC2",
+  },
+  icon1: {
+    marginLeft: 15,
+    color: color.black,
+    fontSize: 30,
   },
 });

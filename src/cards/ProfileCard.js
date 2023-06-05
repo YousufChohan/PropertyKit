@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     //marginHorizontal: "2.5%",
     width: "98%",
     //height: 390,
-    aspectRatio: 2.1,
+    aspectRatio: 1,
     resizeMode: "stretch",
   },
   s2: {

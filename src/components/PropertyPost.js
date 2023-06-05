@@ -1,9 +1,10 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropertyPost_Card from "../cards/PropertyPost_Card";
+import SearchCard from "../cards/SearchCard";
 
-const PropertyPost = () => {
-  let data = [
+const PropertyPost = (navigation) => {
+  let datta = [
     {
       id: 1,
       agentname: "malikriaz",
@@ -94,23 +95,64 @@ const PropertyPost = () => {
       ],
     },
   ];
+  const [data, setData] = useState([]);
+
+  const getallproperties = async () => {
+    fetch("http://10.0.2.2:3000/searchUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ keyword: "" }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          setData([]);
+        } else {
+          setData(
+            [
+              ...data.user.map((el, i) => {
+                return [...el.posts];
+              }),
+            ].flat()
+          );
+          console.log(
+            [
+              ...data.user.map((el, i) => {
+                return [...el.posts];
+              }),
+            ].flat()
+          );
+        }
+      })
+      .catch((err) => {
+        setData([]);
+      });
+  };
+
+  useEffect(() => {
+    getallproperties();
+  }, []);
+
   //console.log(data[0].agentname);
   return (
     <ScrollView style={styles.container}>
-      {data.map((item) => {
+      {data?.reverse().map((item) => {
         return (
-          <PropertyPost_Card
-            key={item.id}
-            agentname={item.agentname}
-            propertyPrecinct={item.propertyPrecinct}
-            propertyNum={item.propertyNum}
-            propertyStreet={item.propertyStreet}
-            propertyPrice={item.propertyPrice}
-            propertyType={item.propertyType}
-            propertyDetail={item.propertyDetail}
-            propertyImage={item.propertyImage}
-            profileImage={item.profileImage}
-            interested={item.interested}
+          <SearchCard
+            navigation={navigation}
+            key={item._id}
+            agentname={item.username}
+            propertyPrecinct={item.propertyprecinct}
+            propertyNum={item.propertynum}
+            propertyStreet={item.propertystreet}
+            propertyPrice={item.propertyprice}
+            propertyType={item.propertytype}
+            propertyDetail={item.propertydetail}
+            propertyImage={item.post}
+            profileImage={item.profilepic}
+            interested={item.likes}
             comments={item.comments}
           />
         );

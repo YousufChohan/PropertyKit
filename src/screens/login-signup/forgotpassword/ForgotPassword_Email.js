@@ -5,6 +5,7 @@ import {
   View,
   Image,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import React from "react";
 import { containerFull, goback, logo1 } from "../../../commoncss/PageCSS";
@@ -12,6 +13,39 @@ import { Ionicons } from "@expo/vector-icons";
 import logo from "../../../../assets/logo.png";
 import { formButton, formHead2, formInput } from "../../../commoncss/FormCSS";
 const ForgotPassword_Email = ({ navigation }) => {
+  const [email, setEmail] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+
+  const handleEmail = () => {
+    if (email === "") {
+      alert("Please enter email");
+    } else {
+      setLoading(true);
+      fetch("http://10.0.2.2:3000/forgotpass", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error === "Invalid Credentials!!") {
+            // alert('Invalid Credentials')
+            alert("Invalid Credentials");
+            setLoading(false);
+          } else if (data.message === "Email Sent") {
+            setLoading(false);
+            alert(data.message);
+
+            navigation.navigate("ForgotPassword_Verification", {
+              useremail: data.email,
+              userVerificationCode: data.VerificationCode,
+            });
+          }
+        });
+    }
+  };
   return (
     <View style={containerFull}>
       <TouchableOpacity
@@ -33,13 +67,18 @@ const ForgotPassword_Email = ({ navigation }) => {
 
       <Image source={logo} style={logo1} />
       <Text style={formHead2}>Verify your Email</Text>
-      <TextInput placeholder="Enter Your Email" style={formInput} />
-      <Text
-        style={formButton}
-        onPress={() => navigation.navigate("ForgotPassword_Verification")}
-      >
-        Next
-      </Text>
+      <TextInput
+        placeholder="Enter Your Email"
+        style={formInput}
+        onChangeText={(text) => setEmail(text)}
+      />
+      {loading ? (
+        <ActivityIndicator size="large" color="black" />
+      ) : (
+        <Text style={formButton} onPress={() => handleEmail()}>
+          Next
+        </Text>
+      )}
     </View>
   );
 };

@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   activenavbar_icon1,
@@ -19,7 +19,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import SearchCard from "../../cards/SearchCard";
 
 const SearchPage = ({ navigation, page }) => {
-  let data = [
+  let datta = [
     {
       id: 1,
       agentname: "usufchohan",
@@ -153,6 +153,58 @@ const SearchPage = ({ navigation, page }) => {
   ];
 
   const [keyword, setKeyword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
+
+  const getallproperties = async () => {
+    if (keyword.length > 0) {
+      setLoading(true);
+      fetch("http://10.0.2.2:3000/searchUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ keyword: keyword }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            setData([]);
+            setError(data.error);
+            setLoading(false);
+          } else {
+            setError(null);
+            setData(
+              [
+                ...data.user.map((el, i) => {
+                  return [...el.posts];
+                }),
+              ].flat()
+            );
+            console.log(
+              [
+                ...data.user.map((el, i) => {
+                  return [...el.posts];
+                }),
+              ].flat()
+            );
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          setData([]);
+          setLoading(false);
+        });
+    } else {
+      setData([]);
+      setError(null);
+    }
+  };
+
+  useEffect(() => {
+    getallproperties();
+  }, [keyword]);
 
   return (
     <View style={styles.container}>
@@ -188,47 +240,50 @@ const SearchPage = ({ navigation, page }) => {
           />
 
           {data
-            .filter((item) => {
+            ?.filter((item) => {
+              // console.log(item);
               if (keyword == "") return null;
               else if (
-                item.propertyPrecinct
-                  .toLowerCase()
+                item?.propertyprecinct
+                  ?.toLowerCase()
                   .includes(keyword.toLowerCase()) ||
-                item.propertyNum
-                  .toString()
-                  .toLowerCase()
-                  .includes(keyword.toLowerCase()) ||
-                item.propertyPrice
-                  .toString()
-                  .toLowerCase()
-                  .includes(keyword.toLowerCase()) ||
-                item.propertyStreet
-                  .toLowerCase()
-                  .includes(keyword.toLowerCase()) ||
-                item.propertyType
-                  .toLowerCase()
-                  .includes(keyword.toLowerCase()) ||
-                item.propertyDetail
-                  .toLowerCase()
-                  .includes(keyword.toLowerCase()) ||
-                item.agentname.toLowerCase().includes(keyword.toLowerCase())
+                item?.propertynum
+                  ?.toString()
+                  ?.toLowerCase()
+                  ?.includes(keyword.toLowerCase()) ||
+                item?.propertyprice
+                  ?.toString()
+                  ?.toLowerCase()
+                  ?.includes(keyword.toLowerCase()) ||
+                item?.propertystreet
+                  ?.toLowerCase()
+                  ?.includes(keyword.toLowerCase()) ||
+                item?.propertytype
+                  ?.toLowerCase()
+                  ?.includes(keyword.toLowerCase()) ||
+                item?.propertydetail
+                  ?.toLowerCase()
+                  ?.includes(keyword.toLowerCase()) ||
+                item?.username?.toLowerCase().includes(keyword.toLowerCase())
               )
                 return item;
             })
             .map((item) => {
               return (
                 <SearchCard
-                  key={item.id}
-                  agentname={item.agentname}
-                  propertyPrecinct={item.propertyPrecinct}
-                  propertyNum={item.propertyNum}
-                  propertyStreet={item.propertyStreet}
-                  propertyPrice={item.propertyPrice}
-                  propertyType={item.propertyType}
-                  propertyDetail={item.propertyDetail}
-                  propertyImage={item.propertyImage}
-                  profileImage={item.profileImage}
-                  interested={item.interested}
+                  navigation={navigation}
+                  key={item._id}
+                  agentname={item.username}
+                  agentemail={item.email}
+                  propertyPrecinct={item.propertyprecinct}
+                  propertyNum={item.propertynum}
+                  propertyStreet={item.propertystreet}
+                  propertyPrice={item.propertyprice}
+                  propertyType={item.propertytype}
+                  propertyDetail={item.propertydetail}
+                  propertyImage={item.post}
+                  profileImage={item.profilepic}
+                  interested={item.likes}
                   comments={item.comments}
                 />
               );

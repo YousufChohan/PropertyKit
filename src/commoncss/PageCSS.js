@@ -4,7 +4,15 @@ module.exports = {
   containerFull: {
     width: "100%",
     height: "100%",
-    backgroundColor: color.secondarycolor,
+    backgroundColor: color.secondarycolor2,
+    alignItems: "center",
+    justifyConctent: "center",
+  },
+  containerFulll: {
+    width: "100%",
+    height: "100%",
+    // backgroundColor: color.white,
+
     alignItems: "center",
     justifyConctent: "center",
   },
@@ -13,6 +21,14 @@ module.exports = {
     resizeMode: "contain",
     marginTop: 150,
     marginBottom: 20,
+  },
+  bgg: {
+    position: "absolute",
+    height: "2%",
+    resizeMode: "contain",
+    // marginTop: 150,
+    // marginBottom: 20,
+    // zIndex: -1,
   },
   hr80: {
     width: "80%",

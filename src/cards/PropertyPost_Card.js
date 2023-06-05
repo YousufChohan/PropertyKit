@@ -61,7 +61,7 @@ const PropertyPost_Card = ({
                 setIsInterested(false);
               }}
             />
-            <Text style={styles.interested}>{interested.length + 1}</Text>
+            {/* <Text style={styles.interested}>{interested.length + 1}</Text> */}
           </View>
         ) : (
           <View style={styles.s21}>
@@ -74,7 +74,7 @@ const PropertyPost_Card = ({
                 setIsInterested(true);
               }}
             />
-            <Text style={styles.notInterested}>{interested.length}</Text>
+            {/* <Text style={styles.notInterested}>{interested.length}</Text> */}
           </View>
         )}
 
@@ -153,9 +153,9 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     //marginHorizontal: "2.5%",
     width: "100%",
-    //height: 390,
-    aspectRatio: 2.1,
-    resizeMode: "stretch",
+    // height: "100%",
+    aspectRatio: 1,
+    // resizeMode: "stretch",
   },
   s2: {
     width: "100%",

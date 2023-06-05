@@ -21,21 +21,18 @@ const Settings1 = ({ navigation }) => {
         <Text style={formHead}>Settings</Text>
         <Text
           style={styles.txt1}
-          //   onPress={() => navigation.navigate("EditProfile")}
+          onPress={() => navigation.navigate("EditProfile")}
         >
           1. Edit Profile
         </Text>
         <Text
           style={styles.txt1}
-          //   onPress={() => navigation.navigate("ChangePassword")}
+          onPress={() => navigation.navigate("ChangePassword")}
         >
           2. Change Password
         </Text>
         <Text style={styles.txt1}>3. Customer Support</Text>
-        <Text
-          style={styles.txt1}
-          // onPress={() => logout()}
-        >
+        <Text style={styles.txt1} onPress={() => navigation.navigate("Login")}>
           4. Logout
         </Text>
       </SafeAreaView>

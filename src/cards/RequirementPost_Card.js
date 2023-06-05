@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   },
   s3: {
     width: "100%",
-    backgroundColor: color.black,
+    backgroundColor: color.secondarycolor,
     padding: 10,
   },
   commentuser: {
