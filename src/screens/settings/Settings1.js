@@ -13,12 +13,14 @@ const Settings1 = ({ navigation }) => {
       <StatusBar barStyle="light-content" />
       <Topnavbar navigation={navigation} />
       <SafeAreaView style={styles.container}>
-        <Ionicons
-          name="arrow-back"
-          style={styles.gohomeicon}
-          onPress={() => navigation.navigate("MyProfile")}
-        />
-        <Text style={formHead}>Settings</Text>
+        <View style={styles.settingandbackcontainer}>
+          <Ionicons
+            name="arrow-back"
+            style={styles.gohomeicon}
+            onPress={() => navigation.navigate("MyProfile")}
+          />
+          <Text style={styles.formHead}>Settings</Text>
+        </View>
         <Text
           style={styles.txt1}
           onPress={() => navigation.navigate("EditProfile")}
@@ -43,15 +45,20 @@ const Settings1 = ({ navigation }) => {
 export default Settings1;
 
 const styles = StyleSheet.create({
+  settingandbackcontainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
   gohomeicon: {
-    position: "absolute",
-    top: 50,
-    left: 20,
-    zIndex: 10,
-    marginTop: 16,
+    // position: "absolute",
+    // top: 50,
+    // left: 20,
+    // zIndex: 10,
+    // marginTop: 16,
     //padding: 200,
     // backgroundColor: color.black,
     color: color.black,
+    marginLeft: 10,
     fontSize: 30,
   },
   container: {
@@ -72,5 +79,12 @@ const styles = StyleSheet.create({
     borderColor: color.primarycolor,
     borderWidth: 1,
     borderRadius: 50,
+  },
+  formHead: {
+    fontSize: 30,
+    color: color.black,
+    textAlign: "center",
+    fontWeight: "bold",
+    marginLeft: 110,
   },
 });

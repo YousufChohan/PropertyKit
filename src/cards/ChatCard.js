@@ -1,14 +1,19 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { color } from "../commoncss/color";
+import nopic from "../../assets/nopic.png";
 
 const ChatCard = ({ chat }) => {
   return (
     <View style={styles.ChatCard}>
-      <Image source={{ uri: chat.profilepic }} style={styles.image} />
+      {chat.profilepic ? (
+        <Image source={{ uri: chat.profilepic }} style={styles.image} />
+      ) : (
+        <Image source={nopic} style={styles.image} />
+      )}
       <View style={styles.c1}>
         <Text style={styles.agentname}>{chat.username}</Text>
-        <Text style={styles.lastmessage}>{chat.username}</Text>
+        <Text style={styles.lastmessage}>Message this user</Text>
       </View>
     </View>
   );
@@ -18,7 +23,7 @@ export default ChatCard;
 
 const styles = StyleSheet.create({
   ChatCard: {
-    backgroundColor: color.secondarycolor,
+    backgroundColor: color.secondarycolor2,
     width: "100%",
     marginTop: 10,
     borderRadius: 20,
@@ -41,7 +46,7 @@ const styles = StyleSheet.create({
   },
   lastmessage: {
     color: color.black,
-    fontSize: 19,
+    fontSize: 14,
     paddingRight: 35,
   },
 });

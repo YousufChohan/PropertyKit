@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.secondarycolor,
     //backgroundColor: "#9FB379", //olive
     marginVertical: 8,
+    elevation: 20,
   },
   c1: {
     width: "100%",

@@ -126,11 +126,11 @@ export default SearchCard;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    borderRadius: 5,
+    // borderRadius: 5,
     paddingBottom: 10,
     flexDirection: "column",
     // backgroundColor: "",
-    backgroundColor: "#9FB379", //olive
+    // backgroundColor: "#9FB379", //olive
     marginVertical: 8,
   },
   c1: {
@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: color.black,
     backgroundColor: color.primarycolor,
+    elevation: 10,
   },
   profilepic: {
     width: 30,
@@ -162,6 +163,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
     marginLeft: 10,
     fontSize: 18,
+    elevation: 4,
   },
   image: {
     marginTop: 10,
@@ -171,6 +173,7 @@ const styles = StyleSheet.create({
     //height: 390,
     aspectRatio: 1.4,
     resizeMode: "stretch",
+    elevation: 4,
   },
   s2: {
     width: "100%",
@@ -180,6 +183,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     //justifyContent: "center",
     alignItems: "center",
+    elevation: 4,
   },
   s2a: {
     width: "100%",
