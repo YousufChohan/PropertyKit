@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingBottom: 10,
     flexDirection: "column",
-    backgroundColor: color.secondarycolor,
+    backgroundColor: color.primarycolor,
     //backgroundColor: "#9FB379", //olive
     marginBottom: 16,
   },
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: color.black,
-    backgroundColor: color.primarycolor,
+    backgroundColor: color.secondarycolor,
   },
   profilepic: {
     width: 30,

@@ -29,7 +29,7 @@ const Signup_Username = ({ navigation, route }) => {
       alert("Please enter username");
     } else {
       setLoading(true);
-      fetch("http://10.0.2.2:3000/setusername", {
+      fetch("http://192.168.43.73:3000/setusername", {
         method: "post",
         headers: {
           "Content-Type": "application/json",

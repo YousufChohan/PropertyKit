@@ -25,7 +25,7 @@ const Signup_Email = ({ navigation }) => {
       alert("Please enter email");
     } else {
       setLoading(true);
-      fetch("http://10.0.2.2:3000/verify", {
+      fetch("http://192.168.43.73:3000/verify", {
         method: "post",
         headers: {
           "Content-Type": "application/json",

@@ -160,7 +160,7 @@ const SearchPage = ({ navigation, page }) => {
   const getallproperties = async () => {
     if (keyword.length > 0) {
       setLoading(true);
-      fetch("http://10.0.2.2:3000/searchUser", {
+      fetch("http://192.168.43.73:3000/searchUser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

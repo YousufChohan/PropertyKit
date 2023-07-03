@@ -53,7 +53,7 @@ const MessagePage = ({ navigation, route }) => {
   const loaddata = async () => {
     AsyncStorage.getItem("user")
       .then(async (value) => {
-        fetch("http://10.0.2.2:3000/userdata", {
+        fetch("http://192.168.43.73:3000/userdata", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +68,7 @@ const MessagePage = ({ navigation, route }) => {
               setOuruserdata(data.user);
               setUserid(data.user._id);
 
-              fetch("http://10.0.2.2:3000/otheruserdata", {
+              fetch("http://192.168.43.73:3000/otheruserdata", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -122,7 +122,7 @@ const MessagePage = ({ navigation, route }) => {
       senderid: userid,
       recieverid: fuserdata._id,
     };
-    fetch("http://10.0.2.2:3000/savemessage", {
+    fetch("http://192.168.43.73:3000/savemessage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +154,7 @@ const MessagePage = ({ navigation, route }) => {
   const [currentmessage, setCurrentmessage] = React.useState(null);
 
   const loadMessages = (temproomid) => {
-    fetch("http://10.0.2.2:3000/getmessages", {
+    fetch("http://192.168.43.73:3000/getmessages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

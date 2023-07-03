@@ -98,7 +98,7 @@ const PropertyPost = (navigation) => {
   const [data, setData] = useState([]);
 
   const getallproperties = async () => {
-    fetch("http://10.0.2.2:3000/searchUser", {
+    fetch("http://192.168.43.73:3000/searchUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

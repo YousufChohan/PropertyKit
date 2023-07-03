@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingBottom: 10,
     flexDirection: "column",
-    backgroundColor: color.secondarycolor,
-    //backgroundColor: "#9FB379", //olive
+    // backgroundColor: "",
+    backgroundColor: "#9FB379", //olive
     marginVertical: 8,
   },
   c1: {
@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
   },
   propertyDetail: {
     color: color.black,
+    fontFamily: "Roboto",
     marginLeft: 10,
     fontSize: 18,
   },

@@ -30,7 +30,7 @@ const Signup_Password = ({ navigation, route }) => {
       alert("Password does not match");
     } else {
       setLoading(true);
-      fetch("http://10.0.2.2:3000/signup", {
+      fetch("http://192.168.43.73:3000/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

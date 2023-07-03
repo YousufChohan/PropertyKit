@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View, Image, ImageBackground } from "react-native";
+import { StyleSheet, View, ImageBackground } from "react-native";
+import LottieView from "lottie-react-native";
 
 const Splash = ({ navigation }) => {
   useEffect(() => {
@@ -16,7 +17,7 @@ const Splash = ({ navigation }) => {
         style={styles.backgroundImage}
       >
         <LottieView
-          source={require("../../../assets/your-lottie-animation.json")}
+          source={require("../../../assets/propertysplash.json")}
           autoPlay
           loop={false}
           onAnimationFinish={() => {
@@ -39,11 +40,6 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     justifyContent: "center",
     alignItems: "center",
-  },
-  logoImage: {
-    width: 150,
-    height: 150,
-    resizeMode: "contain",
   },
 });
 

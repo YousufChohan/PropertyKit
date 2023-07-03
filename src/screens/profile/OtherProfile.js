@@ -48,12 +48,12 @@ const OtherProfile = ({ navigation, route }) => {
   const { user, agentemail } = route.params;
   // console.log(agentemail);
   const loaddata = async () => {
-    await fetch("http://10.0.2.2:3000/otheruserdata", {
+    await fetch("http://192.168.43.73:3000/otheruserdata", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email: "soban@gmail.com" }),
+      body: JSON.stringify({ email: agentemail }),
     })
       .then((res) => res.json())
       .then((data) => {

@@ -45,7 +45,7 @@ export default Settings1;
 const styles = StyleSheet.create({
   gohomeicon: {
     position: "absolute",
-    top: 15,
+    top: 50,
     left: 20,
     zIndex: 10,
     marginTop: 16,
@@ -61,12 +61,16 @@ const styles = StyleSheet.create({
     backgroundColor: color.white,
   },
   txt1: {
+    paddingVertical: 10,
+    marginHorizontal: 10,
     paddingLeft: 10,
     marginTop: 10,
     color: color.black,
     fontSize: 20,
-    backgroundColor: color.secondarycolor,
-    borderBottomColor: color.primarycolor,
-    borderBottomWidth: 1,
+    // width: "60%",
+    backgroundColor: color.secondarycolor2,
+    borderColor: color.primarycolor,
+    borderWidth: 1,
+    borderRadius: 50,
   },
 });

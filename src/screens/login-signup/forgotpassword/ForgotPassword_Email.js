@@ -21,7 +21,7 @@ const ForgotPassword_Email = ({ navigation }) => {
       alert("Please enter email");
     } else {
       setLoading(true);
-      fetch("http://10.0.2.2:3000/forgotpass", {
+      fetch("http://192.168.43.73:3000/forgotpass", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

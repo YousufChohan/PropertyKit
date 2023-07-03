@@ -32,7 +32,7 @@ const ChangePassword = ({ navigation }) => {
     } else {
       setLoading(true);
       AsyncStorage.getItem("user").then((data) => {
-        fetch("http://10.0.2.2:3000/changepassword", {
+        fetch("http://192.168.43.73:3000/changepassword", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

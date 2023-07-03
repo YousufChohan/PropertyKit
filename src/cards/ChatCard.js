@@ -5,10 +5,10 @@ import { color } from "../commoncss/color";
 const ChatCard = ({ chat }) => {
   return (
     <View style={styles.ChatCard}>
-      <Image source={{ uri: chat.profileimage }} style={styles.image} />
+      <Image source={{ uri: chat.profilepic }} style={styles.image} />
       <View style={styles.c1}>
-        <Text style={styles.agentname}>{chat.agentname}</Text>
-        <Text style={styles.lastmessage}>{chat.lastmessage}</Text>
+        <Text style={styles.agentname}>{chat.username}</Text>
+        <Text style={styles.lastmessage}>{chat.username}</Text>
       </View>
     </View>
   );

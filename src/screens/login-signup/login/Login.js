@@ -38,7 +38,7 @@ const Login = ({ navigation }) => {
       alert("Please enter your Email and password");
     } else {
       setLoading(true);
-      fetch("http://10.0.2.2:3000/login", {
+      fetch("http://192.168.43.73:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

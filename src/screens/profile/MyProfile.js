@@ -434,7 +434,7 @@ const MyProfile = ({ navigation }) => {
     AsyncStorage.getItem("user")
       .then(async (value) => {
         // console.log("async userdata ", data);
-        fetch("http://10.0.2.2:3000/userdata", {
+        fetch("http://192.168.43.73:3000/userdata", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
