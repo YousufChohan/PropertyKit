@@ -10,6 +10,7 @@ import {
 import React, { useState } from "react";
 import { containerFull, goback, hr80, logo1 } from "../../commoncss/PageCSS";
 import logo from "../../../assets/logo.png";
+import { color } from "../../commoncss/color";
 import {
   formbtn,
   formButton,
@@ -63,7 +64,7 @@ const UploadProfilePicture = ({ navigation }) => {
       setLoading(true);
 
       pickImage().then((url) => {
-        fetch("http://192.168.43.73:3000/setprofilepic", {
+        fetch(color.ipAddress + "/setprofilepic", {
           method: "post",
           headers: {
             "Content-Type": "application/json",

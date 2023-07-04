@@ -16,6 +16,7 @@ import {
   formHead3,
   formInput,
 } from "../../../commoncss/FormCSS";
+import { color } from "../../../commoncss/color";
 const Signup_Password = ({ navigation, route }) => {
   const { email, username } = route.params;
   const [password, setpassword] = useState("");
@@ -30,7 +31,7 @@ const Signup_Password = ({ navigation, route }) => {
       alert("Password does not match");
     } else {
       setLoading(true);
-      fetch("http://192.168.43.73:3000/signup", {
+      fetch(color.ipAddress + "/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

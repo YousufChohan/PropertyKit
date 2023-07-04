@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "white",
     //backgroundColor: "#CAEEC2",
-    paddingTop: 75,
+    paddingTop: 60,
     paddingBottom: 50,
   },
 });

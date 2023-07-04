@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
+import { color } from "../../commoncss/color";
 import { containerFull, goback, hr80, logo1 } from "../../commoncss/PageCSS";
 import logo from "../../../assets/logo.png";
 import {
@@ -34,7 +35,7 @@ const ChangeDescription = ({ navigation }) => {
       setLoading(true);
       AsyncStorage.getItem("user")
         .then((data) => {
-          fetch("http://192.168.43.73:3000/setdescription", {
+          fetch(color.ipAddress + "/setdescription", {
             method: "post",
             headers: {
               "Content-Type": "application/json",

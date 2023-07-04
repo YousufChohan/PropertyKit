@@ -17,6 +17,7 @@ import {
   formHead3,
   formInput,
 } from "../../../commoncss/FormCSS";
+import { color } from "../../../commoncss/color";
 const ForgotPassword_Password = ({ navigation, route }) => {
   const { email } = route.params;
   const [password, setpassword] = useState("");
@@ -30,7 +31,7 @@ const ForgotPassword_Password = ({ navigation, route }) => {
       alert("Passwords do not match");
     } else {
       setLoading(true);
-      fetch("http://192.168.43.73:3000/resetpass", {
+      fetch(color.ipAddress + "/resetpass", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

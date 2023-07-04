@@ -3,7 +3,7 @@ import React from "react";
 import { color } from "../commoncss/color";
 import nopic from "../../assets/nopic.png";
 
-const ChatCard = ({ chat }) => {
+const ChatCard = ({ chat, agency }) => {
   return (
     <View style={styles.ChatCard}>
       {chat.profilepic ? (
@@ -13,7 +13,7 @@ const ChatCard = ({ chat }) => {
       )}
       <View style={styles.c1}>
         <Text style={styles.agentname}>{chat.username}</Text>
-        <Text style={styles.lastmessage}>Message this user</Text>
+        <Text style={styles.lastmessage}>{agency}</Text>
       </View>
     </View>
   );
@@ -23,7 +23,7 @@ export default ChatCard;
 
 const styles = StyleSheet.create({
   ChatCard: {
-    backgroundColor: color.secondarycolor2,
+    backgroundColor: color.primarycolor,
     width: "100%",
     marginTop: 10,
     borderRadius: 20,

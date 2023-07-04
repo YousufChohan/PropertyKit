@@ -17,6 +17,7 @@ import {
   formHead3,
   formInput,
 } from "../../../commoncss/FormCSS";
+import { color } from "../../../commoncss/color";
 
 const Signup_Username = ({ navigation, route }) => {
   const { email } = route.params;
@@ -29,7 +30,7 @@ const Signup_Username = ({ navigation, route }) => {
       alert("Please enter username");
     } else {
       setLoading(true);
-      fetch("http://192.168.43.73:3000/setusername", {
+      fetch(color.ipAddress + "/setusername", {
         method: "post",
         headers: {
           "Content-Type": "application/json",

@@ -25,6 +25,7 @@ import {
 } from "../../../commoncss/FormCSS";
 // import LinearGradient from "react-native-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
+import { color } from "../../../commoncss/color";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import AsyncStorage from "@react-native-community/async-storage";
 
@@ -38,7 +39,7 @@ const Login = ({ navigation }) => {
       alert("Please enter your Email and password");
     } else {
       setLoading(true);
-      fetch("http://192.168.43.73:3000/login", {
+      fetch(color.ipAddress + "/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +70,7 @@ const Login = ({ navigation }) => {
   return (
     <LinearGradient
       colors={["#3a95ff", "#a8e5f9", "#E5FFFD"]}
-      style={styles.LinearGradient}
+      style={{ flex: 1 }}
     >
       <View style={containerFulll}>
         <Image source={logo} style={logo1} />

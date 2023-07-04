@@ -6,6 +6,8 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Modal,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
@@ -28,12 +30,29 @@ import ProfileCard from "../../cards/ProfileCard";
 import ProfileCard2 from "../../cards/ProfileCard2";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import nopic from "../../../assets/nopic.png";
+import { LinearGradient } from "expo-linear-gradient";
+import * as Clipboard from "expo-clipboard";
 
 const OtherProfile = ({ navigation, route }) => {
   const [showDetail, SetShowDetail] = useState(true);
   const [showProperty, SetShowProperty] = useState(true);
   const [userdata, setUserdata] = React.useState(null);
   const [issameuser, setIssameuser] = React.useState(false);
+  const [showImage, setShowImage] = useState(false);
+  const handlePhonePress = async () => {
+    await Clipboard.setString(userdata.mobile);
+
+    Toast.show({
+      type: "success",
+      text1: "Phone Number Copied",
+      visibilityTime: 2000,
+    });
+  };
+
+  const handleImagePress = () => {
+    setSelectedImage(userdata.profilepic);
+    setShowImage(true);
+  };
 
   const ismyprofile = (otheruser) => {
     AsyncStorage.getItem("user").then((loggeduser) => {
@@ -48,7 +67,7 @@ const OtherProfile = ({ navigation, route }) => {
   const { user, agentemail } = route.params;
   // console.log(agentemail);
   const loaddata = async () => {
-    await fetch("http://192.168.43.73:3000/otheruserdata", {
+    await fetch(color.ipAddress + "/otheruserdata", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,11 +107,13 @@ const OtherProfile = ({ navigation, route }) => {
       {userdata ? (
         <ScrollView>
           <View style={styles.c1}>
-            {userdata.profilepic.length > 0 ? (
-              <Image
-                style={styles.profilepic}
-                source={{ uri: userdata.profilepic }}
-              />
+            {userdata.profilepic ? (
+              <TouchableOpacity onPress={handleImagePress}>
+                <Image
+                  style={styles.profilepic}
+                  source={{ uri: userdata.profilepic }}
+                />
+              </TouchableOpacity>
             ) : (
               <Image style={styles.profilepic} source={nopic} />
             )}
@@ -122,21 +143,19 @@ const OtherProfile = ({ navigation, route }) => {
                   size={24}
                   color="black"
                 />
-                <Text style={styles.txt}>{userdata.mobile}</Text>
+                <TouchableOpacity onPress={handlePhonePress}>
+                  <Text style={styles.txt}>{userdata.mobile}</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
-          <Text
-            style={styles.message}
-            onPress={() => {
-              navigation.navigate("MessagePage", {
-                fuseremail: userdata.email,
-                fuserid: userdata._id,
-              });
-            }}
-          >
-            Message
-          </Text>
+          {showImage && (
+            <ImagePopup
+              imageUrl={userdata.profilepic}
+              onClose={() => setShowImage(false)}
+            />
+          )}
+
           {showDetail ? (
             <TouchableOpacity
               style={{ flexDirection: "row", justifyContent: "center" }}
@@ -164,30 +183,53 @@ const OtherProfile = ({ navigation, route }) => {
                 <Text style={styles.txt}>Show Less</Text>
                 <Feather name="arrow-up" size={24} color="black" />
               </TouchableOpacity>
-              <Text style={styles.txt}>
-                E-Mail: <Text style={styles.txt}>{userdata.email}</Text>
-              </Text>
-              <Text style={styles.txt}>City: {userdata.city}</Text>
-              {userdata.agentBio?.length > 0 && (
-                <Text style={styles.txt}>About: {userdata.description}</Text>
-              )}
+              <View style={{ marginLeft: 10, paddingTop: 10 }}>
+                <Text style={styles.txt}>
+                  E-Mail: <Text style={styles.txt}>{userdata.email}</Text>
+                </Text>
+                <Text style={styles.txt}>City: {userdata.city}</Text>
+                {userdata.agentBio?.length > 0 && (
+                  <Text style={styles.txt}>About: {userdata.description}</Text>
+                )}
+              </View>
             </View>
           )}
-          <View style={styles.hr1}></View>
-          <View style={styles.deals}>
-            {/* <View style={styles.dealsbuttons}>
-              <TouchableOpacity
-                style={styles.c2a}
-                onPress={() => SetShowProperty(true)}
-              >
-                {showProperty ? (
-                  <Ionicons name="business" style={activenavbar_icon1} />
-                ) : (
-                  <Ionicons name="business" style={navbar_icon1} />
-                )}
-                <Text style={{ fontSize: 15 }}>My Property</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
+          <View
+            style={{
+              backgroundColor: color.secondarycolor2,
+              width: "100%",
+              marginTop: 5,
+              elevation: 20,
+              paddingTop: 5,
+              borderRadius: 20,
+            }}
+          >
+            <Text
+              style={styles.message}
+              onPress={() => {
+                navigation.navigate("MessagePage", {
+                  fuseremail: userdata.email,
+                  fuserid: userdata._id,
+                });
+              }}
+            >
+              Message <Text>{userdata.username}</Text>
+            </Text>
+            <View style={styles.hr1}></View>
+            <View style={styles.deals}>
+              <View style={styles.dealsbuttons}>
+                <TouchableOpacity
+                  style={styles.c2a}
+                  onPress={() => SetShowProperty(true)}
+                >
+                  {showProperty ? (
+                    <Ionicons name="business" style={activenavbar_icon1} />
+                  ) : (
+                    <Ionicons name="business" style={navbar_icon1} />
+                  )}
+                  <Text style={{ fontSize: 15 }}>Properties</Text>
+                </TouchableOpacity>
+                {/* <TouchableOpacity
                 style={styles.c2b}
                 onPress={() => navigation.navigate("Settings1")}
               >
@@ -197,42 +239,47 @@ const OtherProfile = ({ navigation, route }) => {
                   // onPress={() => navigation.navigate("SearchPage")}
                 />
                 <Text style={{ fontSize: 15 }}>Settings</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.c2a}
-                // onPress={() => SetShowProperty(false)}
-              >
-                {showProperty ? (
-                  <MaterialCommunityIcons
-                    name="format-list-checks"
-                    style={navbar_icon1}
-                  />
-                ) : (
-                  <MaterialCommunityIcons
-                    name="format-list-checks"
-                    style={activenavbar_icon1}
-                  />
-                )}
-
-                <Text style={{ fontSize: 15 }}>My Demand</Text>
-              </TouchableOpacity>
-            </View> */}
-            <View style={styles.hr1}></View>
-            {showProperty ? (
-              <View style={styles.c13}>
-                {userdata.posts?.reverse().map((item) => {
-                  return (
-                    <ProfileCard
-                      key={item.post}
-                      propertyNum={item.propertynum}
-                      propertyImage={item.post}
-                      propertyType={item.propertytype}
-                      propertyStreet={item.propertystreet}
-                      propertyPrecinct={item.propertyprecinct}
+              </TouchableOpacity> */}
+                <TouchableOpacity
+                  style={styles.c2a}
+                  onPress={() => SetShowProperty(false)}
+                >
+                  {showProperty ? (
+                    <MaterialCommunityIcons
+                      name="format-list-checks"
+                      style={navbar_icon1}
                     />
-                  );
-                })}
-                {/* {datta.properties.map((item) => {
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="format-list-checks"
+                      style={activenavbar_icon1}
+                    />
+                  )}
+
+                  <Text style={{ fontSize: 15 }}>Demands</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.hr1}></View>
+            <LinearGradient
+              colors={["#E5FFFD", "#a8e5f9", "#3a95ff"]}
+              style={{ flex: 1 }}
+            >
+              {showProperty ? (
+                <View style={styles.c13}>
+                  {userdata.posts?.reverse().map((item) => {
+                    return (
+                      <ProfileCard
+                        key={item.post}
+                        propertyNum={item.propertynum}
+                        propertyImage={item.post}
+                        propertyType={item.propertytype}
+                        propertyStreet={item.propertystreet}
+                        propertyPrecinct={item.propertyprecinct}
+                      />
+                    );
+                  })}
+                  {/* {datta.properties.map((item) => {
                     return (
                       <ProfileCard
                         key={item.id}
@@ -250,34 +297,48 @@ const OtherProfile = ({ navigation, route }) => {
                       />
                     );
                   })} */}
-              </View>
-            ) : (
-              <View style={styles.c13}>
-                {userdata.requirements.map((item) => {
-                  return (
-                    <ProfileCard2
-                      key={item.id}
-                      agentname={item.agentname}
-                      reqPrecinct={item.reqPrecinct}
-                      reqNum={item.reqNum}
-                      reqStreet={item.reqStreet}
-                      reqType={item.reqType}
-                      reqBudget={item.reqBudget}
-                      reqSpecs={item.reqSpecs}
-                      profileImage={item.profileImage}
-                      noted={item.noted}
-                      offers={item.offers}
-                    />
-                  );
-                })}
-              </View>
-            )}
+                </View>
+              ) : (
+                <View style={styles.c13}>
+                  {userdata.demands?.reverse().map((item) => {
+                    return (
+                      <ProfileCard2
+                        key={item.id}
+                        agentname={item.username}
+                        agentemail={item.email}
+                        demandPrecinct={item.demandprecinct}
+                        demandNum={item.demandnum}
+                        demandStreet={item.demandstreet}
+                        demandPrice={item.demandprice}
+                        demandType={item.demandtype}
+                        demandDetail={item.demanddetail}
+                        profileImage={item.profilepic}
+                        interested={item.likes}
+                        comments={item.comments}
+                      />
+                    );
+                  })}
+                </View>
+              )}
+            </LinearGradient>
           </View>
         </ScrollView>
       ) : (
         <ActivityIndicator size="large" color="black" style={styles.c1loader} />
       )}
     </SafeAreaView>
+  );
+};
+const ImagePopup = ({ imageUrl, onClose }) => {
+  return (
+    <Modal visible={true} transparent={true} onRequestClose={onClose}>
+      <View style={styles.modalContainer}>
+        <TouchableOpacity style={styles.modalCloseButton} onPress={onClose}>
+          <Ionicons name="close" size={24} color="white" />
+        </TouchableOpacity>
+        <Image style={styles.modalImage} source={{ uri: imageUrl }} />
+      </View>
+    </Modal>
   );
 };
 
@@ -359,7 +420,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 1,
     marginVertical: 5,
-    backgroundColor: color.primarycolor,
+    // backgroundColor: color.primarycolor,
   },
   description: {
     color: color.black,
@@ -376,7 +437,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   c13: {
-    backgroundColor: color.primarycolor,
+    // backgroundColor: color.primarycolor,
     flexDirection: "row",
     flexWrap: "wrap",
     marginBottom: 20,
@@ -427,14 +488,32 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     margin: 10,
+    alignSelf: "center",
     backgroundColor: color.primarycolor,
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 20,
-    width: 145,
+    width: 245,
     textAlign: "center",
   },
   row: {
     flexDirection: "row",
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+  },
+  modalCloseButton: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    zIndex: 1,
+  },
+  modalImage: {
+    width: 390,
+    height: 390,
+    borderRadius: 10,
   },
 });

@@ -18,6 +18,7 @@ import {
   formInput,
   formTextLinkRight,
 } from "../../commoncss/FormCSS";
+import { color } from "../../commoncss/color";
 const ChangePassword = ({ navigation }) => {
   const [oldpassword, setOldpassword] = useState("");
   const [newpassword, setNewpassword] = useState("");
@@ -32,7 +33,7 @@ const ChangePassword = ({ navigation }) => {
     } else {
       setLoading(true);
       AsyncStorage.getItem("user").then((data) => {
-        fetch("http://192.168.43.73:3000/changepassword", {
+        fetch(color.ipAddress + "/changepassword", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

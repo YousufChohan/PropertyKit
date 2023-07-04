@@ -53,7 +53,7 @@ const Signup_Verify = ({ navigation, route }) => {
 
       <Image source={logo} style={logo1} />
       <Text style={formHead3}>
-        Verificaion code has been sent to your Email
+        Verification code has been sent to your Email
       </Text>
       <TextInput
         placeholder="Enter 6-digit code here"

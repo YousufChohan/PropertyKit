@@ -34,7 +34,7 @@ const AddDemand = ({ navigation }) => {
     AsyncStorage.getItem("user").then((data) => {
       setLoading2(true);
 
-      fetch("http://192.168.43.73:3000/addproperty", {
+      fetch(color.ipAddress + "/adddemand", {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -51,10 +51,10 @@ const AddDemand = ({ navigation }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          if (data.message === "Post Added!!") {
-            alert("Post added successfully");
+          if (data.message === "Demand Added!!") {
+            alert("Demand added successfully");
             setLoading2(false);
-            navigation.navigate("MyProfile");
+            navigation.goBack;
           } else {
             alert("Something went wrong, please try again");
             setLoading2(false);
@@ -77,7 +77,7 @@ const AddDemand = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
 
-      <Text style={formHead2}>Add a Demand</Text>
+      <Text style={formHead}>Add a Demand</Text>
       <TextInput
         placeholder="Enter Demand Number"
         style={formInput}
@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.secondarycolor2,
     alignItems: "center",
     justifyContent: "center",
+    height: "100%",
   },
   formHead2: {
     fontSize: 30,

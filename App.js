@@ -21,6 +21,8 @@ import NotificationPage from "./src/screens/mainpage/NotificationPage";
 import Settings1 from "./src/screens/settings/Settings1";
 import ChangePassword from "./src/screens/settings/ChangePassword";
 import ChangeDescription from "./src/screens/settings/ChangeDescription";
+import ChangeAgency from "./src/screens/settings/ChangeAgency";
+import AddDemand from "./src/screens/mainpage/AddDemand";
 import ChangeUsername from "./src/screens/settings/ChangeUsername";
 import UploadProfilePicture from "./src/screens/settings/UploadProfilePicture";
 import EditProfile from "./src/screens/settings/EditProfile";
@@ -28,6 +30,8 @@ import AddPost from "./src/screens/mainpage/AddPost";
 import OtherProfile from "./src/screens/profile/OtherProfile";
 import SplashScreen from "./src/screens/splash/SplashScreen";
 import MessagePage from "./src/screens/chat/MessagePage";
+import ChangeMobile from "./src/screens/settings/ChangeMobile";
+import ChangeCity from "./src/screens/settings/ChangeCity";
 
 const Stack = createNativeStackNavigator();
 
@@ -139,8 +143,29 @@ export default function App() {
           }}
         />
         <Stack.Screen
+          name="ChangeAgency"
+          component={ChangeAgency}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        />
+        <Stack.Screen
+          name="ChangeMobile"
+          component={ChangeMobile}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        />
+        <Stack.Screen
           name="ChangeUsername"
           component={ChangeUsername}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        />
+        <Stack.Screen
+          name="ChangeCity"
+          component={ChangeCity}
           options={{
             animation: "slide_from_bottom",
           }}
@@ -160,6 +185,8 @@ export default function App() {
           }}
         />
         <Stack.Screen name="AddPost" component={AddPost} />
+        <Stack.Screen name="AddDemand" component={AddDemand} />
+
         <Stack.Screen name="MessagePage" component={MessagePage} />
       </Stack.Navigator>
     </NavigationContainer>

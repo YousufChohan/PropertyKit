@@ -12,6 +12,9 @@ import { icon1, row } from "../commoncss/PageCSS";
 import { FontAwesome } from "@expo/vector-icons";
 import { notecss } from "../commoncss/FormCSS";
 import { color } from "../commoncss/color";
+import nopic from "../../assets/nopic.png";
+import { LinearGradient } from "expo-linear-gradient";
+
 const SearchCard = ({
   navigation,
   route,
@@ -35,12 +38,21 @@ const SearchCard = ({
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("OtherProfile", { navigation, agentemail })
+          navigation.navigate("OtherProfile", { agentemail, navigation })
         }
       >
         <View style={styles.c1}>
-          <Image source={{ uri: profileImage }} style={styles.profilepic} />
-          <Text style={styles.agentname}>{agentname}</Text>
+          <LinearGradient
+            colors={["#a8e5f9", "#3a95ff", "#1984D4"]}
+            style={styles.container3}
+          >
+            {profileImage ? (
+              <Image source={{ uri: profileImage }} style={styles.profilepic} />
+            ) : (
+              <Image source={nopic} style={styles.profilepic} />
+            )}
+            <Text style={styles.agentname}>{agentname}</Text>
+          </LinearGradient>
         </View>
       </TouchableOpacity>
       <View>
@@ -138,12 +150,23 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
+    // padding: 10,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: color.black,
-    backgroundColor: color.primarycolor,
+    // backgroundColor: color.primarycolor,
     elevation: 10,
+  },
+  container3: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: color.black,
+    // backgroundColor: color.primarycolor,
+    // elevation: 10,
   },
   profilepic: {
     width: 30,
@@ -160,9 +183,10 @@ const styles = StyleSheet.create({
   },
   propertyDetail: {
     color: color.black,
-    fontFamily: "Roboto",
+    // fontFamily: "Roboto",
     marginLeft: 10,
     fontSize: 18,
+    fontWeight: "600",
     elevation: 4,
   },
   image: {

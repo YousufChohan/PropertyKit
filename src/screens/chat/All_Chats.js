@@ -6,8 +6,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 import React, { useEffect, useState } from "react";
 import { color } from "../../commoncss/color";
+// import { ipAddress } from "../../commoncss/color";
 import Topnavbar from "../../components/Topnavbar";
 import Bottomnavbar from "../../components/Bottomnavbar";
 import { StatusBar } from "expo-status-bar";
@@ -17,6 +19,7 @@ import ChatCard from "../../cards/ChatCard";
 import { searchbar } from "../../commoncss/PageCSS";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
 
 const All_Chats = ({ navigation }) => {
   // let chats = [
@@ -97,10 +100,9 @@ const All_Chats = ({ navigation }) => {
   }, []);
 
   const loaddata = async () => {
-    console.log("fuck");
     AsyncStorage.getItem("user")
       .then(async (value) => {
-        fetch("http://192.168.43.73:3000/msguser", {
+        fetch(color.ipAddress + "/msguser", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -125,49 +127,58 @@ const All_Chats = ({ navigation }) => {
   };
   const [keyword, setKeyword] = useState("");
   return (
-    <ScrollView style={styles.container}>
-      <Topnavbar navigation={navigation} />
-      <SafeAreaView>
-        <View style={styles.c1}>
-          <Ionicons
-            name="arrow-back"
-            style={styles.gohomeicon}
-            onPress={() => navigation.goBack()}
-          />
-          <Text style={formHead}>Your Dealings</Text>
-          <TextInput
-            style={styles.searchbar}
-            placeholder="Search by Agent Name"
-            onChangeText={(text) => setKeyword(text)}
-          />
-        </View>
+    <LinearGradient
+      colors={["#3a95ff", "#a8e5f9", "#E5FFFD"]}
+      style={styles.LinearGradient}
+    >
+      <ScrollView style={styles.container}>
+        <Topnavbar navigation={navigation} />
+        <SafeAreaView>
+          <View style={styles.c1}>
+            <Ionicons
+              name="arrow-back"
+              style={styles.gohomeicon}
+              onPress={() => navigation.goBack()}
+            />
+            <Text style={formHead}>Your Dealings</Text>
+            {/* <TextInput
+              style={styles.searchbar}
+              placeholder="Search by Agent Name"
+              onChangeText={(text) => setKeyword(text)}
+            /> */}
+          </View>
 
-        <View style={styles.c2}>
-          {chats
-            .filter((chat) => {
-              if (keyword == "") return chat;
-              else if (
-                chat.agentname.toLowerCase().includes(keyword.toLowerCase())
-              )
-                return chat;
-            })
-            .map((chat) => {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("MessagePage", {
-                      fuseremail: chat.email,
-                      fuserid: chat._id,
-                    });
-                  }}
-                >
-                  <ChatCard key={chat.username} chat={chat} />
-                </TouchableOpacity>
-              );
-            })}
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+          <View style={styles.c2}>
+            {chats
+              .filter((chat) => {
+                if (keyword == "") return chat;
+                else if (
+                  chat.agentname.toLowerCase().includes(keyword.toLowerCase())
+                )
+                  return chat;
+              })
+              .map((chat) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("MessagePage", {
+                        fuseremail: chat.email,
+                        fuserid: chat._id,
+                      });
+                    }}
+                  >
+                    <ChatCard
+                      key={chat.username}
+                      chat={chat}
+                      agency={chat.agency}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+          </View>
+        </SafeAreaView>
+      </ScrollView>
+    </LinearGradient>
   );
 };
 
@@ -177,7 +188,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-    backgroundColor: color.primarycolor,
+    // backgroundColor: color.primarycolor,
   },
   gohomeicon: {
     position: "absolute",
@@ -197,7 +208,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 30,
-    backgroundColor: color.secondarycolor2,
+    backgroundColor: color.primarycolor,
     alignSelf: "center",
     borderRadius: 20,
     borderColor: color.black,
@@ -215,5 +226,8 @@ const styles = StyleSheet.create({
   c2: {
     width: "100%",
     padding: 10,
+  },
+  LinearGradient: {
+    flex: 1,
   },
 });

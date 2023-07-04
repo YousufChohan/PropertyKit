@@ -9,9 +9,10 @@ module.exports = {
     marginVertical: 10,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    fontSize: 10,
+    fontSize: 16,
   },
   formHead: {
+    elevation: 8,
     fontSize: 30,
     color: color.black,
     textAlign: "center",

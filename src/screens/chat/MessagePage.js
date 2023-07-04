@@ -16,6 +16,8 @@ import nopic from "../../../assets/nopic.png";
 import io from "socket.io-client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { color } from "../../commoncss/color";
+import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
 
 const socket = io("http://192.168.0.106:3001");
 
@@ -53,7 +55,7 @@ const MessagePage = ({ navigation, route }) => {
   const loaddata = async () => {
     AsyncStorage.getItem("user")
       .then(async (value) => {
-        fetch("http://192.168.43.73:3000/userdata", {
+        fetch(color.ipAddress + "/userdata", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +70,7 @@ const MessagePage = ({ navigation, route }) => {
               setOuruserdata(data.user);
               setUserid(data.user._id);
 
-              fetch("http://192.168.43.73:3000/otheruserdata", {
+              fetch(color.ipAddress + "/otheruserdata", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -122,7 +124,7 @@ const MessagePage = ({ navigation, route }) => {
       senderid: userid,
       recieverid: fuserdata._id,
     };
-    fetch("http://192.168.43.73:3000/savemessage", {
+    fetch(color.ipAddress + "/savemessage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +156,7 @@ const MessagePage = ({ navigation, route }) => {
   const [currentmessage, setCurrentmessage] = React.useState(null);
 
   const loadMessages = (temproomid) => {
-    fetch("http://192.168.43.73:3000/getmessages", {
+    fetch(color.ipAddress + "/getmessages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -168,13 +170,16 @@ const MessagePage = ({ navigation, route }) => {
   };
   const scrollViewRef = useRef();
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={["#a8e5f9", "#3a95ff", "#1984D4"]}
+      style={styles.container}
+    >
       <View style={styles.s1}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("All_Chats")}
+          onPress={() => navigation.goBack()}
           style={styles.goback}
         >
-          <MaterialIcons name="arrow-back-ios" size={24} color="gray" />
+          <Ionicons name="arrow-back" size={24} color={color.black} />
         </TouchableOpacity>
 
         {fuserdata?.profilepic ? (
@@ -217,7 +222,7 @@ const MessagePage = ({ navigation, route }) => {
         <TextInput
           style={styles.sbottominput}
           placeholder="Type a message"
-          placeholderTextColor={"grey"}
+          placeholderTextColor={"white"}
           onChangeText={(text) => setCurrentmessage(text)}
           value={currentmessage}
         />
@@ -230,11 +235,15 @@ const MessagePage = ({ navigation, route }) => {
               onPress={() => sendMessage()}
             />
           ) : (
-            <MaterialIcons name="send" size={24} color="grey" />
+            <MaterialIcons
+              name="send"
+              size={24}
+              color={color.secondarycolor2}
+            />
           )}
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -252,36 +261,41 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   username: {
-    color: "white",
+    color: color.black,
     fontSize: 20,
     marginLeft: 10,
     fontWeight: "bold",
   },
   s1: {
+    marginTop: 20,
     width: "100%",
     alignItems: "center",
     flexDirection: "row",
-    backgroundColor: "#111111",
+    backgroundColor: color.secondarycolor2,
     padding: 10,
+    marginBottom: 10,
   },
   sbottom: {
-    width: "100%",
-    height: 50,
+    width: "97%",
+    height: 60,
     backgroundColor: "#111111",
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 2,
-    marginRight: 3,
+    // marginHorizontal: 2,
+    // marginRight: 3,
     justifyContent: "space-between",
+    alignSelf: "center",
     padding: 10,
     position: "absolute",
-    bottom: 0,
+    bottom: 3,
     borderRadius: 30,
   },
   sbottominput: {
     width: "80%",
-    height: 40,
-    fontSize: 17,
+    height: 50,
+    marginLeft: 5,
+    marginBottom: 5,
+    fontSize: 19,
     color: "white",
   },
 
@@ -302,14 +316,15 @@ const styles = StyleSheet.create({
     // backgroundColor:'red'
   },
   messageTextRight: {
-    color: "white",
-    backgroundColor: color.primarycolor,
+    color: color.black,
+    backgroundColor: color.secondarycolor,
     // width:'min-content',
     minWidth: 100,
     padding: 10,
     fontSize: 17,
     borderRadius: 20,
-    margin: 10,
+    marginHorizontal: 10,
+    marginBottom: 15,
   },
   messageLeft: {
     width: "100%",
@@ -323,6 +338,10 @@ const styles = StyleSheet.create({
     minWidth: 100,
     padding: 10,
     borderRadius: 20,
-    margin: 10,
+    marginHorizontal: 10,
+    marginBottom: 15,
+  },
+  goback: {
+    marginHorizontal: 5,
   },
 });

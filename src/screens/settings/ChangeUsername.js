@@ -19,6 +19,7 @@ import {
   formTextLinkCenter,
   formTextLinkRight,
 } from "../../commoncss/FormCSS";
+import { color } from "../../commoncss/color";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -34,7 +35,7 @@ const ChangeUsername = ({ navigation }) => {
       setLoading(true);
       AsyncStorage.getItem("user")
         .then((data) => {
-          fetch("http://192.168.43.73:3000/changeusername", {
+          fetch(color.ipAddress + "/changeusername", {
             method: "post",
             headers: {
               "Content-Type": "application/json",
@@ -49,7 +50,7 @@ const ChangeUsername = ({ navigation }) => {
               if (data.message === "Username Updated") {
                 setLoading(false);
                 alert("Username has been set successfully");
-                navigation.navigate("Settings1");
+                navigation.navigate("MyProfile");
               } else if (data.error === "Invalid Credentials") {
                 alert("Invalid Credentials");
                 setLoading(false);

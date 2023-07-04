@@ -6,16 +6,19 @@ import { FontAwesome } from "@expo/vector-icons";
 import { formHead, formHead2, notecss } from "../commoncss/FormCSS";
 import { color } from "../commoncss/color";
 const ProfileCard2 = ({
+  navigation,
+  route,
+  agentemail,
   agentname,
-  reqPrecinct,
-  reqNum,
-  reqStreet,
-  reqType,
-  reqBudget,
-  reqSpecs,
+  demandPrecinct,
+  demandNum,
+  demandStreet,
+  demandPrice,
+  demandType,
+  demandDetail,
   profileImage,
-  noted,
-  offers,
+  interested,
+  comments,
 }) => {
   //console.log(agentname);
 
@@ -27,12 +30,11 @@ const ProfileCard2 = ({
       </View> */}
       <View>
         <Text style={formHead}>Required!</Text>
-        <Text style={styles.propertyDetail}></Text>
-        <Text style={styles.propertyDetail}>Precinct: {reqPrecinct}</Text>
-        <Text style={styles.propertyDetail}>Type: {reqType}</Text>
-        <Text style={styles.propertyDetail}>Street/Road: {reqStreet}</Text>
-        <Text style={styles.propertyDetail}>Plot number: {reqNum}</Text>
-        <Text style={styles.propertyDetail}>Budget: {reqBudget}</Text>
+        <Text style={styles.propertyDetail}>Precinct: {demandPrecinct}</Text>
+        <Text style={styles.propertyDetail}>Type: {demandType}</Text>
+        <Text style={styles.propertyDetail}>Street/Road: {demandStreet}</Text>
+        <Text style={styles.propertyDetail}>Plot number: {demandNum}</Text>
+        <Text style={styles.propertyDetail}>Budget: {demandPrice}</Text>
       </View>
     </View>
   );
@@ -81,12 +83,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   propertyDetail: {
+    fontWeight: "600",
     color: color.black,
     marginLeft: 10,
     fontSize: 18,
   },
   image: {
-    marginTop: 10,
+    // marginTop: 10,
     borderRadius: 2,
     //marginHorizontal: "2.5%",
     width: "100%",

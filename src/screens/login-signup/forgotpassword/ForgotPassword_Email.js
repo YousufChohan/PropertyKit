@@ -12,6 +12,7 @@ import { containerFull, goback, logo1 } from "../../../commoncss/PageCSS";
 import { Ionicons } from "@expo/vector-icons";
 import logo from "../../../../assets/logo.png";
 import { formButton, formHead2, formInput } from "../../../commoncss/FormCSS";
+import { color } from "../../../commoncss/color";
 const ForgotPassword_Email = ({ navigation }) => {
   const [email, setEmail] = React.useState("");
   const [loading, setLoading] = React.useState(false);
@@ -21,7 +22,7 @@ const ForgotPassword_Email = ({ navigation }) => {
       alert("Please enter email");
     } else {
       setLoading(true);
-      fetch("http://192.168.43.73:3000/forgotpass", {
+      fetch(color.ipAddress + "/forgotpass", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

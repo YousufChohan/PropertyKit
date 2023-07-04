@@ -19,7 +19,7 @@ import {
 
 const ForgotPassword_Verification = ({ navigation, route }) => {
   const { useremail, userVerificationCode } = route.params;
-  console.log(useremail, userVerificationCode);
+  // console.log(useremail, userVerificationCode);
 
   const [verificationCode, setVerificationCode] = React.useState("");
 

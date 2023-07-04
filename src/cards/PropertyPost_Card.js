@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
   propertyDetail: {
     color: color.black,
     marginLeft: 10,
+    fontWeight: "600",
     fontSize: 18,
   },
   image: {

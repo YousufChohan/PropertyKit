@@ -15,13 +15,13 @@ import { color } from "../../commoncss/color";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const ChangeCity = ({ navigation }) => {
-  const [city, setCity] = useState("");
+const ChangeMobile = ({ navigation }) => {
+  const [mobile, setMobile] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleCity = () => {
-    if (city === "") {
-      alert("Please enter the city name");
+  const handleMobile = () => {
+    if (mobile === "") {
+      alert("Please enter the mobile name");
     } else {
       setLoading(true);
       AsyncStorage.getItem("user")
@@ -29,10 +29,10 @@ const ChangeCity = ({ navigation }) => {
           const email = JSON.parse(data).user.email;
           const requestData = {
             email: email,
-            city: city,
+            mobile: mobile,
           };
 
-          fetch(color.ipAddress + "/setcity", {
+          fetch(color.ipAddress + "/setmobile", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -43,7 +43,7 @@ const ChangeCity = ({ navigation }) => {
             .then((data) => {
               if (data.message === "A") {
                 setLoading(false);
-                alert("City has been set successfully");
+                alert("Mobile has been set successfully");
                 navigation.navigate("Settings1");
               } else if (data.error === "Invalid Credentials") {
                 alert("Invalid Credentials");
@@ -84,17 +84,17 @@ const ChangeCity = ({ navigation }) => {
       </TouchableOpacity>
 
       <Image source={logo} style={logo1} />
-      <Text style={formHead2}>Change City</Text>
+      <Text style={formHead2}>Change Mobile</Text>
       <TextInput
-        placeholder="Enter new city"
+        placeholder="Enter new mobile"
         style={formInput}
-        onChangeText={(text) => setCity(text)}
+        onChangeText={(text) => setMobile(text)}
       />
 
       {loading ? (
         <ActivityIndicator />
       ) : (
-        <Text style={formButton} onPress={() => handleCity()}>
+        <Text style={formButton} onPress={() => handleMobile()}>
           Save
         </Text>
       )}
@@ -102,6 +102,6 @@ const ChangeCity = ({ navigation }) => {
   );
 };
 
-export default ChangeCity;
+export default ChangeMobile;
 
 const styles = StyleSheet.create({});

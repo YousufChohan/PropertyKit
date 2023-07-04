@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,48 +8,42 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
-import { containerFull, goback, hr80, logo1 } from "../../commoncss/PageCSS";
+import { containerFull, goback, logo1 } from "../../commoncss/PageCSS";
 import logo from "../../../assets/logo.png";
-import {
-  formbtn,
-  formButton,
-  formHead,
-  formHead2,
-  formHead3,
-  formInput,
-  formTextLinkCenter,
-  formTextLinkRight,
-} from "../../commoncss/FormCSS";
+import { formButton, formHead2, formInput } from "../../commoncss/FormCSS";
+import { color } from "../../commoncss/color";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const ChangeAgency = ({ navigation }) => {
   const [agency, setAgency] = useState("");
-
   const [loading, setLoading] = useState(false);
 
-  const handleagency = () => {
-    if (agency == "") {
-      alert("Please enter Agency Name");
+  const handleAgency = () => {
+    if (agency === "") {
+      alert("Please enter the agency name");
     } else {
       setLoading(true);
       AsyncStorage.getItem("user")
         .then((data) => {
-          fetch("http://192.168.43.73:3000/setagency", {
-            method: "post",
+          const email = JSON.parse(data).user.email;
+          const requestData = {
+            email: email,
+            agency: agency,
+          };
+
+          fetch(color.ipAddress + "/setagency", {
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              email: JSON.parse(data).user.email,
-              agency: agency,
-            }),
+            body: JSON.stringify(requestData),
           })
             .then((res) => res.json())
             .then((data) => {
-              if (data.message === "agency Updated") {
+              if (data.message === "A") {
                 setLoading(false);
-                alert("agency has been set successfully");
+                alert("Agency has been set successfully");
                 navigation.navigate("Settings1");
               } else if (data.error === "Invalid Credentials") {
                 alert("Invalid Credentials");
@@ -69,8 +64,6 @@ const ChangeAgency = ({ navigation }) => {
           setLoading(false);
         });
     }
-
-    // navigation.navigate('Signup_ChoosePassword')
   };
 
   return (
@@ -91,19 +84,17 @@ const ChangeAgency = ({ navigation }) => {
       </TouchableOpacity>
 
       <Image source={logo} style={logo1} />
-      <Text style={formHead2}>Change agency</Text>
+      <Text style={formHead2}>Change Agency</Text>
       <TextInput
         placeholder="Enter new agency"
         style={formInput}
         onChangeText={(text) => setAgency(text)}
-        multiline={true}
-        numberOfLines={5}
       />
 
       {loading ? (
         <ActivityIndicator />
       ) : (
-        <Text style={formButton} onPress={() => handleagency()}>
+        <Text style={formButton} onPress={() => handleAgency()}>
           Save
         </Text>
       )}

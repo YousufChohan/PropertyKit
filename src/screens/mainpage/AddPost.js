@@ -70,7 +70,7 @@ const AddPost = ({ navigation }) => {
       AsyncStorage.getItem("user").then((data) => {
         setLoading2(true);
 
-        fetch("http://192.168.43.73:3000/addproperty", {
+        fetch(color.ipAddress + "/addproperty", {
           method: "post",
           headers: {
             "Content-Type": "application/json",

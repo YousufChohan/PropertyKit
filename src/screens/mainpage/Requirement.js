@@ -19,7 +19,7 @@ const Requirement = ({ navigation }) => {
         page2={"MainPage"}
       />
       <Bottomnavbar navigation={navigation} page={"Requirement"} />
-      <RequirementPost />
+      <RequirementPost navigation={navigation} />
     </SafeAreaView>
   );
 };

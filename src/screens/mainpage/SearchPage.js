@@ -160,7 +160,7 @@ const SearchPage = ({ navigation, page }) => {
   const getallproperties = async () => {
     if (keyword.length > 0) {
       setLoading(true);
-      fetch("http://192.168.43.73:3000/searchUser", {
+      fetch(color.ipAddress + "/searchUser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -213,7 +213,7 @@ const SearchPage = ({ navigation, page }) => {
       <Bottomnavbar navigation={navigation} page={"SearchPage"} />
       <SafeAreaView>
         <ScrollView style={styles.container}>
-          <View style={styles.c1}>
+          {/* <View style={styles.c1}>
             <View style={styles.c2}>
               <FontAwesome5
                 name="building"
@@ -230,7 +230,7 @@ const SearchPage = ({ navigation, page }) => {
               />
               <Text style={{ fontSize: 15 }}>Search for Demand</Text>
             </View>
-          </View>
+          </View> */}
           <TextInput
             placeholder="Search for a deal!"
             style={searchbar}

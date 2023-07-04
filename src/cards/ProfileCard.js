@@ -1,10 +1,19 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Modal,
+} from "react-native";
 import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { icon1, row } from "../commoncss/PageCSS";
 import { FontAwesome } from "@expo/vector-icons";
 import { notecss } from "../commoncss/FormCSS";
 import { color } from "../commoncss/color";
+import { Ionicons } from "@expo/vector-icons";
+
 const ProfileCard = ({
   agentname,
   propertyPrecinct,
@@ -18,29 +27,51 @@ const ProfileCard = ({
   interested,
   comments,
 }) => {
-  //console.log(agentname);
+  const [showImage, setShowImage] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
 
-  const [isInterested, setIsInterested] = useState(false);
-  const [showcomments, setShowcomments] = useState(false);
+  const handleImagePress = () => {
+    setSelectedImage(propertyImage);
+    setShowImage(true);
+  };
 
   return (
-    <View style={styles.container}>
-      {/* <View style={styles.c1}>
-        <Image source={{ uri: profileImage }} style={styles.profilepic} />
-        <Text style={styles.agentname}>{agentname}</Text>
-      </View> */}
-      <View>
-        <Text style={styles.propertyDetail}>Precinct: {propertyPrecinct}</Text>
-        <Text style={styles.propertyDetail}>Type: {propertyType}</Text>
-        <Text style={styles.propertyDetail}>Street/Road: {propertyStreet}</Text>
-        <Text style={styles.propertyDetail}>Plot number: {propertyNum}</Text>
-        {/* <Text style={styles.propertyDetail}></Text> */}
+    <TouchableOpacity style={styles.container} onPress={handleImagePress}>
+      <View style={styles.containe}>
+        <View>
+          <Text style={styles.propertyDetail}>
+            Precinct: {propertyPrecinct}
+          </Text>
+          <Text style={styles.propertyDetail}>Type: {propertyType}</Text>
+          <Text style={styles.propertyDetail}>
+            Street/Road: {propertyStreet}
+          </Text>
+          <Text style={styles.propertyDetail}>Plot number: {propertyNum}</Text>
+        </View>
+        <Image source={{ uri: propertyImage }} style={styles.image} />
       </View>
-      <Image source={{ uri: propertyImage }} style={styles.image} />
-    </View>
+
+      {showImage && (
+        <ImagePopup
+          imageUrl={selectedImage}
+          onClose={() => setShowImage(false)}
+        />
+      )}
+    </TouchableOpacity>
   );
 };
-
+const ImagePopup = ({ imageUrl, onClose }) => {
+  return (
+    <Modal visible={true} transparent={true} onRequestClose={onClose}>
+      <View style={styles.modalContainer}>
+        <TouchableOpacity style={styles.modalCloseButton} onPress={onClose}>
+          <Ionicons name="close" size={24} color="white" />
+        </TouchableOpacity>
+        <Image style={styles.modalImage} source={{ uri: imageUrl }} />
+      </View>
+    </Modal>
+  );
+};
 export default ProfileCard;
 
 const styles = StyleSheet.create({
@@ -85,6 +116,7 @@ const styles = StyleSheet.create({
   },
   propertyDetail: {
     color: color.black,
+    fontWeight: "600",
     marginLeft: 10,
     fontSize: 18,
   },
@@ -157,5 +189,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingRight: 75,
     marginVertical: 3,
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0, 0, 0.9, 0.7)",
+  },
+  modalCloseButton: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    zIndex: 1,
+  },
+  modalImage: {
+    width: 390,
+    height: 390,
+    borderRadius: 10,
   },
 });
