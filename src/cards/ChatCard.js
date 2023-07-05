@@ -13,7 +13,7 @@ const ChatCard = ({ chat, agency }) => {
       )}
       <View style={styles.c1}>
         <Text style={styles.agentname}>{chat.username}</Text>
-        <Text style={styles.lastmessage}>{agency}</Text>
+        <Text style={styles.lastmessage}>Message this Agent</Text>
       </View>
     </View>
   );
@@ -23,13 +23,14 @@ export default ChatCard;
 
 const styles = StyleSheet.create({
   ChatCard: {
-    backgroundColor: color.primarycolor,
+    backgroundColor: color.white,
     width: "100%",
     marginTop: 10,
     borderRadius: 20,
     padding: 10,
     flexDirection: "row",
     alignItems: "center",
+    elevation: 8,
   },
   image: {
     width: 40,

@@ -7,7 +7,7 @@ export const color = {
   primarycolor: "#1984D4", //pruple kiya on 2nd July
   secondarycolor: "#fff",
   secondarycolor2: "#a8e5f9",
-  ipAddress: "http://172.20.10.4:3000",
+  ipAddress: "http://192.168.0.104:3000",
 };
 
 //lightest blue color E5FFFD

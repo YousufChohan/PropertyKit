@@ -32,6 +32,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import nopic from "../../../assets/nopic.png";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Clipboard from "expo-clipboard";
+import Toast from "../../components/Toast";
 
 const OtherProfile = ({ navigation, route }) => {
   const [showDetail, SetShowDetail] = useState(true);
@@ -39,14 +40,21 @@ const OtherProfile = ({ navigation, route }) => {
   const [userdata, setUserdata] = React.useState(null);
   const [issameuser, setIssameuser] = React.useState(false);
   const [showImage, setShowImage] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+
+  const showToast = () => {
+    setToastVisible(true);
+    setTimeout(() => {
+      setToastVisible(false);
+    }, 2000);
+  };
+
+  const [isToastVisible, setToastVisible] = useState(false);
+
   const handlePhonePress = async () => {
     await Clipboard.setString(userdata.mobile);
 
-    Toast.show({
-      type: "success",
-      text1: "Phone Number Copied",
-      visibilityTime: 2000,
-    });
+    showToast();
   };
 
   const handleImagePress = () => {
@@ -106,6 +114,10 @@ const OtherProfile = ({ navigation, route }) => {
       <Bottomnavbar navigation={navigation} page={"SearchPage"} />
       {userdata ? (
         <ScrollView>
+          {isToastVisible && (
+            <Toast message="Phone Number copied to Clipboard ." />
+          )}
+
           <View style={styles.c1}>
             {userdata.profilepic ? (
               <TouchableOpacity onPress={handleImagePress}>
@@ -146,6 +158,13 @@ const OtherProfile = ({ navigation, route }) => {
                 <TouchableOpacity onPress={handlePhonePress}>
                   <Text style={styles.txt}>{userdata.mobile}</Text>
                 </TouchableOpacity>
+
+                <Feather
+                  name="copy"
+                  size={14}
+                  color={color.primarycolor}
+                  style={{ alignSelf: "center", marginLeft: 5 }}
+                />
               </View>
             </View>
           </View>
@@ -184,12 +203,17 @@ const OtherProfile = ({ navigation, route }) => {
                 <Feather name="arrow-up" size={24} color="black" />
               </TouchableOpacity>
               <View style={{ marginLeft: 10, paddingTop: 10 }}>
-                <Text style={styles.txt}>
+                <Text style={styles.ttxt}>
                   E-Mail: <Text style={styles.txt}>{userdata.email}</Text>
                 </Text>
-                <Text style={styles.txt}>City: {userdata.city}</Text>
-                {userdata.agentBio?.length > 0 && (
-                  <Text style={styles.txt}>About: {userdata.description}</Text>
+                <Text style={styles.ttxt}>
+                  City: <Text style={styles.txt}>{userdata.city}</Text>
+                </Text>
+                {userdata.description.length > 0 && (
+                  <Text style={styles.ttxt}>
+                    About:
+                    <Text style={styles.txt}>{userdata.description}</Text>
+                  </Text>
                 )}
               </View>
             </View>
@@ -215,6 +239,7 @@ const OtherProfile = ({ navigation, route }) => {
             >
               Message <Text>{userdata.username}</Text>
             </Text>
+
             <View style={styles.hr1}></View>
             <View style={styles.deals}>
               <View style={styles.dealsbuttons}>
@@ -381,8 +406,18 @@ const styles = StyleSheet.create({
     color: color.primarycolor,
     marginRight: 5,
   },
-  txt: {
+  ttxt: {
     color: color.primarycolor,
+    fontSize: 20,
+    fontWeight: "bold",
+    // margin: 10,
+    // backgroundColor: color.primarycolor,
+    // paddingVertical: 10,
+    // paddingHorizontal: 20,
+    borderRadius: 20,
+  },
+  txt: {
+    color: color.black,
     fontSize: 20,
     fontWeight: "bold",
     // margin: 10,
@@ -484,7 +519,7 @@ const styles = StyleSheet.create({
   },
 
   message: {
-    color: "white",
+    color: color.secondarycolor,
     fontSize: 20,
     fontWeight: "bold",
     margin: 10,
@@ -493,7 +528,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 20,
-    width: 245,
+    width: "auto",
     textAlign: "center",
   },
   row: {
